@@ -4,7 +4,18 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+dependencies:
+  yargs:
+    specifier: ^17.7.2
+    version: 17.7.2
+
 devDependencies:
+  '@types/node':
+    specifier: ^20.11.24
+    version: 20.11.24
+  '@types/yargs':
+    specifier: ^17.0.32
+    version: 17.0.32
   git-cz:
     specifier: ^4.9.0
     version: 4.9.0
@@ -407,10 +418,25 @@ packages:
     resolution: {integrity: sha1-ps4+VW4A/ZiV3Yct0XKtDUvWh/Q=, tarball: https://r.npm.sankuai.com/@types/estree/download/@types/estree-1.0.5.tgz}
     dev: true
 
+  /@types/node@20.11.24:
+    resolution: {integrity: sha1-zCB1ERBGlOhOn7F/mgxMQtRRd5I=, tarball: http://r.npm.sankuai.com/@types/node/download/@types/node-20.11.24.tgz}
+    dependencies:
+      undici-types: 5.26.5
+    dev: true
+
+  /@types/yargs-parser@21.0.3:
+    resolution: {integrity: sha1-gV4wt4bS6PDc2F/VvPXhoE0AjxU=, tarball: http://r.npm.sankuai.com/@types/yargs-parser/download/@types/yargs-parser-21.0.3.tgz}
+    dev: true
+
+  /@types/yargs@17.0.32:
+    resolution: {integrity: sha1-Awd0cjovf6r+v2RfTlpINx3KYik=, tarball: http://r.npm.sankuai.com/@types/yargs/download/@types/yargs-17.0.32.tgz}
+    dependencies:
+      '@types/yargs-parser': 21.0.3
+    dev: true
+
   /ansi-regex@5.0.1:
     resolution: {integrity: sha1-CCyyyJyf6GWaMRpTvWpNxTAdswQ=, tarball: http://r.npm.sankuai.com/ansi-regex/download/ansi-regex-5.0.1.tgz}
     engines: {node: '>=8'}
-    dev: true
 
   /ansi-regex@6.0.1:
     resolution: {integrity: sha1-MYPjj66aZdfLXlOUXNWJfQJgoGo=, tarball: http://r.npm.sankuai.com/ansi-regex/download/ansi-regex-6.0.1.tgz}
@@ -422,7 +448,6 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       color-convert: 2.0.1
-    dev: true
 
   /ansi-styles@6.2.1:
     resolution: {integrity: sha1-DmIyDPmcIa//OzASGSVGqsv7BcU=, tarball: http://r.npm.sankuai.com/ansi-styles/download/ansi-styles-6.2.1.tgz}
@@ -498,16 +523,23 @@ packages:
       fsevents: 2.3.3
     dev: true
 
+  /cliui@8.0.1:
+    resolution: {integrity: sha1-DASwddsCy/5g3I5s8vVIaxo2CKo=, tarball: http://r.npm.sankuai.com/cliui/download/cliui-8.0.1.tgz}
+    engines: {node: '>=12'}
+    dependencies:
+      string-width: 4.2.3
+      strip-ansi: 6.0.1
+      wrap-ansi: 7.0.0
+    dev: false
+
   /color-convert@2.0.1:
     resolution: {integrity: sha1-ctOmjVmMm9s68q0ehPIdiWq9TeM=, tarball: http://r.npm.sankuai.com/color-convert/download/color-convert-2.0.1.tgz}
     engines: {node: '>=7.0.0'}
     dependencies:
       color-name: 1.1.4
-    dev: true
 
   /color-name@1.1.4:
     resolution: {integrity: sha1-wqCah6y95pVD3m9j+jmVyCbFNqI=, tarball: http://r.npm.sankuai.com/color-name/download/color-name-1.1.4.tgz}
-    dev: true
 
   /commander@4.1.1:
     resolution: {integrity: sha1-n9YCvZNilOnp70aj9NaWQESxgGg=, tarball: http://r.npm.sankuai.com/commander/download/commander-4.1.1.tgz}
@@ -548,7 +580,6 @@ packages:
 
   /emoji-regex@8.0.0:
     resolution: {integrity: sha1-6Bj9ac5cz8tARZT4QpY79TFkzDc=, tarball: http://r.npm.sankuai.com/emoji-regex/download/emoji-regex-8.0.0.tgz}
-    dev: true
 
   /emoji-regex@9.2.2:
     resolution: {integrity: sha1-hAyIA7DYBH9P8M+WMXazLU7z7XI=, tarball: http://r.npm.sankuai.com/emoji-regex/download/emoji-regex-9.2.2.tgz}
@@ -584,6 +615,11 @@ packages:
       '@esbuild/win32-ia32': 0.19.12
       '@esbuild/win32-x64': 0.19.12
     dev: true
+
+  /escalade@3.1.2:
+    resolution: {integrity: sha1-VAdumrKepb89jx7WKs/7uIJy3yc=, tarball: http://r.npm.sankuai.com/escalade/download/escalade-3.1.2.tgz}
+    engines: {node: '>=6'}
+    dev: false
 
   /execa@5.1.1:
     resolution: {integrity: sha1-+ArZy/Qpj3vR1MlVXCHpN0HEEd0=, tarball: http://r.npm.sankuai.com/execa/download/execa-5.1.1.tgz}
@@ -639,6 +675,11 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
+
+  /get-caller-file@2.0.5:
+    resolution: {integrity: sha1-T5RBKoLbMvNuOwuXQfipf+sDH34=, tarball: http://r.npm.sankuai.com/get-caller-file/download/get-caller-file-2.0.5.tgz}
+    engines: {node: 6.* || 8.* || >= 10.*}
+    dev: false
 
   /get-stream@6.0.1:
     resolution: {integrity: sha1-omLY7vZ6ztV8KFKtYWdSakPL97c=, tarball: http://r.npm.sankuai.com/get-stream/download/get-stream-6.0.1.tgz}
@@ -706,7 +747,6 @@ packages:
   /is-fullwidth-code-point@3.0.0:
     resolution: {integrity: sha1-8Rb4Bk/pCz94RKOJl8C3UFEmnx0=, tarball: http://r.npm.sankuai.com/is-fullwidth-code-point/download/is-fullwidth-code-point-3.0.0.tgz}
     engines: {node: '>=8'}
-    dev: true
 
   /is-glob@4.0.3:
     resolution: {integrity: sha1-ZPYeQsu7LuwgcanawLKLoeZdUIQ=, tarball: http://r.npm.sankuai.com/is-glob/download/is-glob-4.0.3.tgz}
@@ -896,6 +936,11 @@ packages:
       picomatch: 2.3.1
     dev: true
 
+  /require-directory@2.1.1:
+    resolution: {integrity: sha1-jGStX9MNqxyXbiNE/+f3kqam30I=, tarball: http://r.npm.sankuai.com/require-directory/download/require-directory-2.1.1.tgz}
+    engines: {node: '>=0.10.0'}
+    dev: false
+
   /resolve-from@5.0.0:
     resolution: {integrity: sha1-w1IlhD3493bfIcV1V7wIfp39/Gk=, tarball: http://r.npm.sankuai.com/resolve-from/download/resolve-from-5.0.0.tgz}
     engines: {node: '>=8'}
@@ -975,7 +1020,6 @@ packages:
       emoji-regex: 8.0.0
       is-fullwidth-code-point: 3.0.0
       strip-ansi: 6.0.1
-    dev: true
 
   /string-width@5.1.2:
     resolution: {integrity: sha1-FPja7G2B5yIdKjV+Zoyrc728p5Q=, tarball: http://r.npm.sankuai.com/string-width/download/string-width-5.1.2.tgz}
@@ -991,7 +1035,6 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       ansi-regex: 5.0.1
-    dev: true
 
   /strip-ansi@7.1.0:
     resolution: {integrity: sha1-1bZWjKaJ2FYTcLBwdoXSJDT6/0U=, tarball: http://r.npm.sankuai.com/strip-ansi/download/strip-ansi-7.1.0.tgz}
@@ -1099,6 +1142,10 @@ packages:
     hasBin: true
     dev: true
 
+  /undici-types@5.26.5:
+    resolution: {integrity: sha1-vNU5iT0AtW6WT9JlekhmsiGmVhc=, tarball: http://r.npm.sankuai.com/undici-types/download/undici-types-5.26.5.tgz}
+    dev: true
+
   /webidl-conversions@4.0.2:
     resolution: {integrity: sha1-qFWYCx8LazWbodXZ+zmulB+qY60=, tarball: http://r.npm.sankuai.com/webidl-conversions/download/webidl-conversions-4.0.2.tgz}
     dev: true
@@ -1126,7 +1173,6 @@ packages:
       ansi-styles: 4.3.0
       string-width: 4.2.3
       strip-ansi: 6.0.1
-    dev: true
 
   /wrap-ansi@8.1.0:
     resolution: {integrity: sha1-VtwiNo7lcPrOG0mBmXXZuaXq0hQ=, tarball: http://r.npm.sankuai.com/wrap-ansi/download/wrap-ansi-8.1.0.tgz}
@@ -1137,8 +1183,31 @@ packages:
       strip-ansi: 7.1.0
     dev: true
 
+  /y18n@5.0.8:
+    resolution: {integrity: sha1-f0k00PfKjFb5UxSTndzS3ZHOHVU=, tarball: http://r.npm.sankuai.com/y18n/download/y18n-5.0.8.tgz}
+    engines: {node: '>=10'}
+    dev: false
+
   /yaml@2.4.0:
     resolution: {integrity: sha1-I3bbEIPRV/SzpFKZWAPbz0OwgUA=, tarball: http://r.npm.sankuai.com/yaml/download/yaml-2.4.0.tgz}
     engines: {node: '>= 14'}
     hasBin: true
     dev: true
+
+  /yargs-parser@21.1.1:
+    resolution: {integrity: sha1-kJa87r+ZDSG7MfqVFuDt4pSnfTU=, tarball: http://r.npm.sankuai.com/yargs-parser/download/yargs-parser-21.1.1.tgz}
+    engines: {node: '>=12'}
+    dev: false
+
+  /yargs@17.7.2:
+    resolution: {integrity: sha1-mR3zmspnWhkrgW4eA2P5110qomk=, tarball: http://r.npm.sankuai.com/yargs/download/yargs-17.7.2.tgz}
+    engines: {node: '>=12'}
+    dependencies:
+      cliui: 8.0.1
+      escalade: 3.1.2
+      get-caller-file: 2.0.5
+      require-directory: 2.1.1
+      string-width: 4.2.3
+      y18n: 5.0.8
+      yargs-parser: 21.1.1
+    dev: false

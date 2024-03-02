@@ -1,2 +1,2 @@
 # tsc-check
-A tool that supports TSC incremental detection
+Incremental detection tool based on TSC implementation

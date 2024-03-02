@@ -1,17 +1,33 @@
 {
   "name": "tsc-check",
   "version": "1.0.0",
-  "description": "",
+  "description": "Incremental detection tool based on TSC implementation",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsup"
   },
-  "keywords": [],
+  "bin": {
+    "tsc-check": "./bin/index.js"
+  },
+  "keywords": [
+    "tsc",
+    "check",
+    "typescript",
+    "ts",
+    "compile",
+    "language",
+    "javascript"
+  ],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/node": "^20.11.24",
+    "@types/yargs": "^17.0.32",
     "git-cz": "^4.9.0",
     "tsup": "^8.0.2",
     "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "yargs": "^17.7.2"
   }
 }
