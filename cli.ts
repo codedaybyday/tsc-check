@@ -1,25 +1,35 @@
 import yargs from 'yargs';
 import path from 'path';
 import fs from 'fs';
+import { check } from './lib/check';
 
 async function init() {
-    const {version} = await fs.promises.readFile(path.join(__dirname, '../', 'package.json'), 'utf8').then(JSON.parse);
+    const { version } = await fs.promises
+        .readFile(path.join(__dirname, '../', 'package.json'), 'utf8')
+        .then(JSON.parse);
     yargs
         .scriptName('tsc-check')
         .version(version)
-        .command('tsc-check [files...]', 'Check Typescript Files', (yargs) => {
-            return yargs
-              .option('i', {
-                alias: 'ignore',
-                describe: 'Pattern to ignore',
-                type: 'string',
-              })
-              .option('f', {
-                alias: 'file',
-                describe: 'Output file',
-                type: 'string',
-              });
-        })
+        .command(
+            'tsc-check [files...]',
+            'Check Typescript Files',
+            (yargs) => {
+                return yargs.option('files', {
+                    alias: 'f',
+                    describe: 'Output file',
+                    type: 'array',
+                });
+            },
+            (argv) => {
+                console.log(argv.files);
+                const { files } = argv;
+                if (files) {
+                    check({
+                        files,
+                    });
+                }
+            }
+        )
         .demandCommand(1)
         .strict()
         .parse();

@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  json5:
+    specifier: ^2.2.3
+    version: 2.2.3
   yargs:
     specifier: ^17.7.2
     version: 17.7.2
@@ -19,6 +22,9 @@ devDependencies:
   git-cz:
     specifier: ^4.9.0
     version: 4.9.0
+  prettier:
+    specifier: 3.2.5
+    version: 3.2.5
   tsup:
     specifier: ^8.0.2
     version: 8.0.2(typescript@5.3.3)
@@ -783,6 +789,12 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
+  /json5@2.2.3:
+    resolution: {integrity: sha1-eM1vGhm9wStz21rQxh79ZsHikoM=, tarball: http://r.npm.sankuai.com/json5/download/json5-2.2.3.tgz}
+    engines: {node: '>=6'}
+    hasBin: true
+    dev: false
+
   /lilconfig@3.1.1:
     resolution: {integrity: sha1-nYokb6dTEGz8IF/S13BC+spW5eM=, tarball: http://r.npm.sankuai.com/lilconfig/download/lilconfig-3.1.1.tgz}
     engines: {node: '>=14'}
@@ -918,6 +930,12 @@ packages:
     dependencies:
       lilconfig: 3.1.1
       yaml: 2.4.0
+    dev: true
+
+  /prettier@3.2.5:
+    resolution: {integrity: sha1-5SvDCQWG6CSWSogTsJq6YjOyg2g=, tarball: http://r.npm.sankuai.com/prettier/download/prettier-3.2.5.tgz}
+    engines: {node: '>=14'}
+    hasBin: true
     dev: true
 
   /punycode@2.3.1:
