@@ -67,12 +67,14 @@ export const check = ({
         ? 'tsc'
         : resolveFromModule(
               'typescript',
-              `../.bin/tsc${process.platform === 'win32' ? '.cmd' : ''}`
+              `../bin/tsc${process.platform === 'win32' ? '.cmd' : ''}`
           );
-    const { status } = spawnSync(tscFile, spawnArgs, { stdio: 'inherit' });
+    const spawnSyncReturns = spawnSync(tscFile, spawnArgs, {
+        stdio: 'inherit',
+    });
 
     // 结束后清除临时配置文件
     fs.unlinkSync(tmpTsconfigPath);
 
-    return status;
+    return spawnSyncReturns;
 };

@@ -3,6 +3,9 @@ import path from 'path';
 import fs from 'fs';
 import { check } from './lib/check';
 
+interface Command {
+    files: string[];
+}
 async function init() {
     const { version } = await fs.promises
         .readFile(path.join(__dirname, '../', 'package.json'), 'utf8')
@@ -10,7 +13,7 @@ async function init() {
     yargs
         .scriptName('tsc-check')
         .version(version)
-        .command(
+        .command<Command>(
             'tsc-check [files...]',
             'Check Typescript Files',
             (yargs) => {
@@ -24,9 +27,13 @@ async function init() {
                 console.log(argv.files);
                 const { files } = argv;
                 if (files) {
-                    check({
+                    const res = check({
                         files,
                     });
+
+                    if (res.error) {
+                        console.error(res);
+                    }
                 }
             }
         )
