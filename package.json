@@ -7,7 +7,7 @@
         "build": "tsup"
     },
     "bin": {
-        "tsc-check": "./bin/index.js"
+        "tsc-check": "./bin/tsc-check"
     },
     "keywords": [
         "tsc",

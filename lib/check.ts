@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 import { spawnSync } from 'child_process';
 import fs from 'fs';
 import { dirname, join, resolve } from 'path';
@@ -24,7 +22,7 @@ interface TmpTsconfigCreatorOptions {
     tsconfigFilePath?: string;
     files: string[];
 }
-
+// 生成临时的tsconfig文件
 const createTmpTsconfig = ({
     tsconfigFilePath,
     files,
@@ -67,7 +65,7 @@ export const check = ({
         ? 'tsc'
         : resolveFromModule(
               'typescript',
-              `../bin/tsc${process.platform === 'win32' ? '.cmd' : ''}`
+              `./bin/tsc${process.platform === 'win32' ? '.cmd' : ''}`
           );
     const spawnSyncReturns = spawnSync(tscFile, spawnArgs, {
         stdio: 'inherit',
