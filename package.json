@@ -1,8 +1,11 @@
 {
     "name": "tsc-check",
-    "version": "1.0.0",
+    "version": "0.0.1-beta-1",
     "description": "Incremental detection tool based on TSC implementation",
     "main": "dist/index.js",
+    "files": [
+        "./dist"
+    ],
     "scripts": {
         "build": "tsup"
     },
