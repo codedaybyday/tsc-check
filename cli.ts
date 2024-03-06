@@ -6,25 +6,33 @@ import { check } from './lib/check';
 interface Command {
     files: string[];
 }
-async function init() {
+export const init = async () => {
     const { version } = await fs.promises
         .readFile(path.join(__dirname, '../', 'package.json'), 'utf8')
         .then(JSON.parse);
     yargs
         .scriptName('tsc-check')
         .version(version)
+        .usage('Usage: $0 --files [files...]')
+        .options({
+            files: {
+              alias: 'f',
+              describe: 'Files to check',
+              type: 'array',
+              demandOption: true, // 使得 --files 选项必须提供
+            }
+          })
         .command<Command>(
-            'tsc-check [files...]',
-            'Check Typescript Files',
+            '$0',
+            'Perform TypeScript check',
             (yargs) => {
-                return yargs.option('files', {
-                    alias: 'f',
-                    describe: 'Output file',
-                    type: 'array',
-                });
+                return yargs.positional('files', {
+                    describe: 'Files to check',
+                    type: 'string'
+                  });
             },
             (argv) => {
-                console.log(argv.files);
+                console.log('files:', argv.files);
                 const { files } = argv;
                 if (files) {
                     const res = check({
@@ -41,5 +49,3 @@ async function init() {
         .strict()
         .parse();
 }
-
-init();
