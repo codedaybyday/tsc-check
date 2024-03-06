@@ -1,1 +1,2 @@
-export * from './lib/check';
+export * from './lib/performTSCheck';
+export * from './lib/performMultiTSCheck';

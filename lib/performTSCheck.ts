@@ -1,3 +1,7 @@
+/**
+ * @author liubeijing
+ * @fileoverview 该文件是执行tsc-check最小的执行单位，是基于tsc -p的封装
+ */
 import { spawnSync } from 'child_process';
 import fs from 'fs';
 import { dirname, join, resolve } from 'path';
@@ -53,7 +57,7 @@ const createTmpTsconfig = ({
     return tmpTsconfigPath;
 };
 
-export const check = ({
+export const performTSCheck = ({
     files, // 变化的文件列表
     tsconfigFilePath, // tsconfig文件路径
     configFilePath, // tsc-check的配置文件
