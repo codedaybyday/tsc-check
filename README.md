@@ -6,7 +6,9 @@ Incremental detection tool based on TSC implementation
 
 ## 主要使用场景
 
-在使用esbuild时，能享受到esbuild的快速。但是也缺乏了ts的类型检查，使得ts相关的类型问题会遗留越来越多，常见场景：
+在现在的开发构建环境中，往往使用esbuild等非js实现的编译器，他们能带来极速的编译体验。但同时缺点也很明显：缺乏了ts的类型检查，使得ts相关的类型问题会遗留越来越多
+
+常见场景：
 
 1. pre-commit阶段代码增量检查：传统的tsc一般需要全量的检查，比较耗时，这里选择增量检测，就是只检查改变的文件的类型，可结合lint-staged一起使用
 2. 命令行单独检查单个文件
@@ -52,7 +54,7 @@ module.exports = {
 ```json
 // tsc-check.config.json
 {
-  "include": [], // 需要包含进去的文件，一般是全局
+  "include": [], // 一般是全局的声明文件。参考tsconfig.json中comilperOptions.include字段
   "debug": true, // 调试开头
   "traceResolution": true, // 会在参数中添加--traceResolution
   "keepTmp": true, // 保留生成的临时tsconfig.json 主要作用是用来查看生成的文件是否符合预期
