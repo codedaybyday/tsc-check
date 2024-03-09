@@ -11,11 +11,17 @@ dependencies:
   json5:
     specifier: ^2.2.3
     version: 2.2.3
+  minimist:
+    specifier: ^1.2.8
+    version: 1.2.8
   yargs:
     specifier: ^17.7.2
     version: 17.7.2
 
 devDependencies:
+  '@types/minimist':
+    specifier: ^1.2.5
+    version: 1.2.5
   '@types/node':
     specifier: ^20.11.24
     version: 20.11.24
@@ -425,6 +431,10 @@ packages:
 
   /@types/estree@1.0.5:
     resolution: {integrity: sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw==}
+    dev: true
+
+  /@types/minimist@1.2.5:
+    resolution: {integrity: sha512-hov8bUuiLiyFPGyFPE1lwWhmzYbirOXQNNo40+y3zow8aFVTeyn3VWL0VFFfdNddA8S4Vf0Tc062rzyNr7Paag==}
     dev: true
 
   /@types/node@20.11.24:
@@ -865,6 +875,10 @@ packages:
     dependencies:
       brace-expansion: 2.0.1
     dev: true
+
+  /minimist@1.2.8:
+    resolution: {integrity: sha512-2yyAR8qBkN3YuheJanUpWC5U3bb5osDywNB8RzDVlDwDHbocAJveqqj1u8+SVD7jkWT4yvsHCpWqqWqAxb0zCA==}
+    dev: false
 
   /minipass@7.0.4:
     resolution: {integrity: sha512-jYofLM5Dam9279rdkWzqHozUo4ybjdZmCsDHePy5V/PbBcVMiSZR97gmAy45aqi8CK1lG2ECd356FU86avfwUQ==}

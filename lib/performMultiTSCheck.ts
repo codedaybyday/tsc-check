@@ -7,6 +7,8 @@ import { execSync } from 'child_process';
 import fs from 'fs';
 import ts, { type ParsedCommandLine } from 'typescript';
 
+const tscRunnerPath = require.resolve('./lib/tscRunner');
+
 // 缓存解析的配置
 const PARSED_CONFIG_CACHE = new Map<string, ParsedCommandLine>();
 const parseJsonConfigFileContent = (tsconfigPath: string) => {
@@ -19,11 +21,7 @@ const parseJsonConfigFileContent = (tsconfigPath: string) => {
     const result = ts.parseConfigFileTextToJson(tsconfigPath, configFileText);
 
     const configObject = result.config;
-    const parsedConfig = ts.parseJsonConfigFileContent(
-        configObject,
-        ts.sys,
-        basePath
-    );
+    const parsedConfig = ts.parseJsonConfigFileContent(configObject, ts.sys, basePath);
 
     PARSED_CONFIG_CACHE.set(tsconfigPath, parsedConfig);
     return parsedConfig;
@@ -53,19 +51,19 @@ const classifyFilesByTsconfigPath = async (filenames: string[]) => {
         }
         const parsedConfig = parseJsonConfigFileContent(tsconfigPath);
         // 被引用的tsconfig.json路径
-        const referencedTsconfigPaths =
-            parsedConfig?.projectReferences?.map(
-                (references) => references.path
-            ) || [];
+        const referencedTsconfigPaths = parsedConfig?.projectReferences?.map((references) => references.path) || [];
         // 在tsconfigPath同级目录下可能还有tsconfig.node.json
         const allTsconfigPaths = [tsconfigPath, ...referencedTsconfigPaths];
+
+        // 没有references就在放在传入的tsconfig路径下
+        if (!result[tsconfigPath]) {
+            result[tsconfigPath] = [];
+        }
 
         // 如果有references
         if (referencedTsconfigPaths.length > 0) {
             // 拿到到具体命中到那个tsconfig文件
-            const matchedTsconfigPath = allTsconfigPaths.find((tsconfigPath) =>
-                isInTsConfig(filename, tsconfigPath)
-            );
+            const matchedTsconfigPath = allTsconfigPaths.find((tsconfigPath) => isInTsConfig(filename, tsconfigPath));
 
             if (matchedTsconfigPath) {
                 if (!result[matchedTsconfigPath]) {
@@ -74,11 +72,9 @@ const classifyFilesByTsconfigPath = async (filenames: string[]) => {
 
                 result[matchedTsconfigPath].push(filename);
                 return;
+            } else {
+                result[tsconfigPath].push(filename);
             }
-        }
-        // 没有references就在放在传入的tsconfig路径下
-        if (!result[tsconfigPath]) {
-            result[tsconfigPath] = [];
         }
 
         result[tsconfigPath].push(filename);
@@ -95,10 +91,7 @@ interface CommandGeneratorOptions {
     include?: string[];
 }
 // 生成命令
-const generateCommands = (
-    result: ClassifiedFiles,
-    options: CommandGeneratorOptions
-) => {
+const generateCommands = (result: ClassifiedFiles, options: CommandGeneratorOptions) => {
     const { debug, trace, keepTmp, include = [] } = options;
     // 拼接命令
     const commands = [];
@@ -106,12 +99,8 @@ const generateCommands = (
         // 没有文件不生成
         if (!Object.prototype.hasOwnProperty(key) && result[key].length > 0) {
             // ! 这里可能不需要直接执行node程序了，只要执行performTSCheck就行
-            const rawCommand = [
-                `node ${tscFilesPath}`,
-                '--noEmit',
-                `-p ${key}`,
-                `-f ${result[key].join(',')}`,
-            ];
+            // #TODO 需要处理临时文件的生成
+            const rawCommand = [`node ${tscRunnerPath}`, '--noEmit', `-p ${key}`, `-f ${result[key].join(',')}`];
 
             if (include?.length > 0) {
                 rawCommand.push(`-i ${include.join(',')}`);
@@ -145,9 +134,7 @@ type PerformMultiTSCheckOptions = {
     debug?: boolean; // 是否为调试模式，调试模式下会打印出调试信息
 };
 
-export const performMultiTSCheck = async (
-    options: PerformMultiTSCheckOptions
-) => {
+export const performMultiTSCheck = async (options: PerformMultiTSCheckOptions) => {
     const { filenames, quiet = false, debug } = options;
     debug && console.log('tsc-check', filenames);
 
@@ -155,7 +142,10 @@ export const performMultiTSCheck = async (
     const commands = generateCommands(result, options);
     // 如果是quiet返回命令，给lint-staged
     if (quiet) {
-        return commands || [];
+        return {
+            error: null,
+            commands,
+        };
     }
 
     if (!commands || commands.length === 0) {
@@ -167,21 +157,17 @@ export const performMultiTSCheck = async (
         if (debug) {
             console.log(stdout.toString('utf8'));
         }
-        console.log('\x1b[32m%s\x1b[0m', 'tsc check success!');
-    } catch (error: unknown) {
+
+        return {
+            error: null,
+            data: stdout,
+        };
+    } catch (error: any) {
         // 打印错误信息
         // 打印标准错误输出
-        const stderr = error?.stderr?.toString('utf8');
-        const stdout = error?.stdout?.toString('utf8');
-
-        if (stderr) {
-            console.error('\x1b[31m%s\x1b[0m', 'tsc-check stderr:');
-            console.error(stderr);
-        }
-
-        if (stdout) {
-            console.log('\x1b[31m%s\x1b[0m', 'tsc-check stdout:');
-            console.log(stdout);
-        }
+        return {
+            error,
+            data: null,
+        };
     }
 };

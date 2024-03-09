@@ -6,6 +6,7 @@ import { spawnSync } from 'child_process';
 import fs from 'fs';
 import { dirname, join, resolve } from 'path';
 import json5 from 'json5';
+import minimist from 'minimist';
 
 const resolveFromModule = (moduleName: string, ...paths: string[]): string => {
     const modulePath = dirname(require.resolve(`${moduleName}/package.json`));
@@ -27,10 +28,7 @@ interface TmpTsconfigCreatorOptions {
     files: string[];
 }
 // 生成临时的tsconfig文件
-const createTmpTsconfig = ({
-    tsconfigFilePath,
-    files,
-}: TmpTsconfigCreatorOptions) => {
+const createTmpTsconfig = ({ tsconfigFilePath, files }: TmpTsconfigCreatorOptions) => {
     const tsconfigPath = tsconfigFilePath || resolveFromRoot('tsconfig.json');
     const tsconfigContent = fs.readFileSync(tsconfigPath).toString();
     const tsconfig = json5.parse(tsconfigContent); // 解析成对象, 用json5
@@ -57,7 +55,7 @@ const createTmpTsconfig = ({
     return tmpTsconfigPath;
 };
 
-export const performTSCheck = ({
+const tscRunner = ({
     files, // 变化的文件列表
     tsconfigFilePath, // tsconfig文件路径
     configFilePath, // tsc-check的配置文件
@@ -67,10 +65,7 @@ export const performTSCheck = ({
     const spawnArgs = ['-p', tmpTsconfigPath, '--noEmit', '--incremental'];
     const tscFile = process.versions.pnp
         ? 'tsc'
-        : resolveFromModule(
-              'typescript',
-              `./bin/tsc${process.platform === 'win32' ? '.cmd' : ''}`
-          );
+        : resolveFromModule('typescript', `./bin/tsc${process.platform === 'win32' ? '.cmd' : ''}`);
     const spawnSyncReturns = spawnSync(tscFile, spawnArgs, {
         stdio: 'inherit',
     });
@@ -80,3 +75,12 @@ export const performTSCheck = ({
 
     return spawnSyncReturns;
 };
+
+const args = process.argv.slice(2);
+const parsedArgs = minimist(args);
+
+tscRunner({
+    files: parsedArgs.f.split(','),
+    tsconfigFilePath: parsedArgs.p,
+    configFilePath: parsedArgs.c,
+});

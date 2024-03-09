@@ -1,7 +1,7 @@
 import yargs from 'yargs';
 import path from 'path';
 import fs from 'fs';
-import { performTSCheck } from './lib/performTSCheck';
+import { performMultiTSCheck } from './lib/performMultiTSCheck';
 
 interface Command {
     files: string[];
@@ -31,16 +31,32 @@ export const init = async () => {
                     type: 'string',
                 });
             },
-            (argv) => {
+            async (argv) => {
                 console.log('files:', argv.files);
                 const { files } = argv;
                 if (files) {
-                    const res = performTSCheck({
-                        files,
+                    const res = await performMultiTSCheck({
+                        filenames: files,
+                        // quiet ?
                     });
 
-                    if (res.error) {
-                        console.error(res);
+                    if (!res?.error) {
+                        console.log('\x1b[32m%s\x1b[0m', 'tsc check success!');
+                    }
+
+                    if (res?.error) {
+                        const stderr = res.error?.stderr?.toString('utf8');
+                        const stdout = res.error?.stdout?.toString('utf8');
+
+                        if (stderr) {
+                            console.error('\x1b[31m%s\x1b[0m', 'tsc-check stderr:');
+                            console.error(stderr);
+                        }
+
+                        if (stdout) {
+                            console.log('\x1b[31m%s\x1b[0m', 'tsc-check stdout:');
+                            console.log(stdout);
+                        }
                     }
                 }
             }
