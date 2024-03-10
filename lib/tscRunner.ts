@@ -6,7 +6,6 @@ import { spawnSync } from 'child_process';
 import fs from 'fs';
 import { dirname, join, resolve } from 'path';
 import json5 from 'json5';
-import minimist from 'minimist';
 
 const resolveFromModule = (moduleName: string, ...paths: string[]): string => {
     const modulePath = dirname(require.resolve(`${moduleName}/package.json`));
@@ -55,7 +54,7 @@ const createTmpTsconfig = ({ tsconfigFilePath, files }: TmpTsconfigCreatorOption
     return tmpTsconfigPath;
 };
 
-const tscRunner = ({
+export const tscRunner = ({
     files, // 变化的文件列表
     tsconfigFilePath, // tsconfig文件路径
     configFilePath, // tsc-check的配置文件
@@ -75,12 +74,3 @@ const tscRunner = ({
 
     return spawnSyncReturns;
 };
-
-const args = process.argv.slice(2);
-const parsedArgs = minimist(args);
-
-tscRunner({
-    files: parsedArgs.f.split(','),
-    tsconfigFilePath: parsedArgs.p,
-    configFilePath: parsedArgs.c,
-});

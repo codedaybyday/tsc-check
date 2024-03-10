@@ -7,7 +7,7 @@ import { execSync } from 'child_process';
 import fs from 'fs';
 import ts, { type ParsedCommandLine } from 'typescript';
 
-const tscRunnerPath = require.resolve('./lib/tscRunner');
+const tscRunnerPath = require.resolve('./lib/tsCompileRunner');
 
 // 缓存解析的配置
 const PARSED_CONFIG_CACHE = new Map<string, ParsedCommandLine>();
