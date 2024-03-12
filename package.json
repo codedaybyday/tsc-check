@@ -33,7 +33,7 @@
         "typescript": "^5.3.3"
     },
     "dependencies": {
-        "find-up": "^7.0.0",
+        "find-up": "5.0.0",
         "json5": "^2.2.3",
         "minimist": "^1.2.8",
         "yargs": "^17.7.2"
