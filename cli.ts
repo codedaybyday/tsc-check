@@ -12,8 +12,9 @@ const toAbsolutePath = (filePath: string) => {
     return path.resolve(filePath);
 };
 interface Command {
-    files: string[];
-    debug: boolean;
+    files: string[]; // Files to be compiled
+    debug: boolean; // Whether to enable debug mode
+    lintstaged: boolean; // If true, it means executing in lint-staged
 }
 export const init = async () => {
     const { version } = await fs.promises
@@ -36,6 +37,12 @@ export const init = async () => {
                 type: 'boolean',
                 demandOption: false, // 非必选
             },
+            lintstaged: {
+                alias: 'l',
+                describe: 'execute in lint-staged',
+                type: 'boolean',
+                demandOption: false, // 非必选
+            },
         })
         .command<Command>(
             '$0',
@@ -47,13 +54,13 @@ export const init = async () => {
                 });
             },
             async (argv) => {
-                const { files, debug } = argv;
+                const { files, debug, lintstaged } = argv;
                 debug && console.log('files:', argv.files, argv);
                 if (files) {
                     const res = await performMultiTSCheck({
                         filenames: files.map((file) => toAbsolutePath(file)),
                         debug,
-                        // quiet ?
+                        lintstaged
                     });
 
                     if (!res?.error) {

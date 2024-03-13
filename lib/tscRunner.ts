@@ -20,6 +20,7 @@ interface CheckOptions {
     files: string[];
     tsconfigFilePath?: string; // tsconfig.json的路径
     configFilePath?: string; // tsc-check.config.json路径
+    debug?: boolean;
 }
 
 interface TmpTsconfigCreatorOptions {
@@ -58,6 +59,7 @@ export const tscRunner = ({
     files, // 变化的文件列表
     tsconfigFilePath, // tsconfig文件路径
     configFilePath, // tsc-check的配置文件
+    debug
 }: CheckOptions) => {
     const tmpTsconfigPath = createTmpTsconfig({ tsconfigFilePath, files });
 
@@ -70,7 +72,7 @@ export const tscRunner = ({
     });
 
     // 结束后清除临时配置文件
-    fs.unlinkSync(tmpTsconfigPath);
+    !debug && fs.unlinkSync(tmpTsconfigPath);
 
     return spawnSyncReturns;
 };

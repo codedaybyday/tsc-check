@@ -48,7 +48,6 @@ const classifyFilesByTsconfigPath = async (filenames: string[]) => {
         const dir = path.parse(filename).dir;
         // !这里每个文件都要查询匹配一次tsconfig?
         const tsconfigPath = await findUp('tsconfig.json', { cwd: dir });
-        console.log(222, tsconfigPath);
         if (!tsconfigPath) {
             continue;
         }
@@ -93,9 +92,9 @@ interface CommandGeneratorOptions {
     keepTmp?: boolean;
     include?: string[];
 }
-// 生成命令
+// 生成命令,命令中会执行node ./dist/lib/tscRunner.js 用来在lint-staged中执行
 const generateCommands = (result: FilesGroupedByTsconfig, options: CommandGeneratorOptions) => {
-    const { debug, trace, keepTmp, include = [] } = options;
+    const { debug, include = [] } = options;
     // 拼接命令
     const commands = [];
     for (const key in result) {
@@ -107,21 +106,10 @@ const generateCommands = (result: FilesGroupedByTsconfig, options: CommandGenera
                 rawCommand.push(`-i ${include.join(',')}`);
             }
             // 开启tsc的模块追踪
-            if (trace) {
-                rawCommand.push('--traceResolution');
-            }
-            // 删除临时文件
-            if (keepTmp) {
-                rawCommand.push('--keepTmp');
-            }
-
             if (debug) {
                 rawCommand.push('--debug');
             }
 
-            // if (hash) {
-            //     rawCommand.push(`--hash ${hash(key)}`);
-            // }
             commands.push(rawCommand.join(' '));
         }
     }
@@ -130,20 +118,20 @@ const generateCommands = (result: FilesGroupedByTsconfig, options: CommandGenera
 };
 
 type PerformMultiTSCheckOptions = {
-    filenames: string[]; // 需要进行 TypeScript 检查的文件列表
-    quiet?: boolean; // 是否为安静模式，安静模式下只返回命令，不执行
-    debug?: boolean; // 是否为调试模式，调试模式下会打印出调试信息
+    filenames: string[]; // Files to be compiled
+    lintstaged?: boolean; // If true, it means executing in lint-staged
+    debug?: boolean; // Whether to enable debug mode
 };
 
 export const performMultiTSCheck = async (options: PerformMultiTSCheckOptions) => {
-    const { filenames, quiet = false, debug } = options;
+    const { filenames, lintstaged = false, debug } = options;
     debug && console.log('tsc-check', filenames);
 
     const result = await classifyFilesByTsconfigPath(filenames);
 
     // no files found, throw error
     if (Object.keys(result).length === 0) {
-        return !quiet
+        return !lintstaged
             ? {
                   error: new Error('No tsconfig.json found'),
                   data: null,
@@ -155,7 +143,7 @@ export const performMultiTSCheck = async (options: PerformMultiTSCheckOptions) =
     }
     const commands = generateCommands(result, options);
     // return commands to lint-staged
-    if (quiet) {
+    if (lintstaged) {
         return {
             error: null,
             commands,
