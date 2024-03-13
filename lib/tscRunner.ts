@@ -21,12 +21,10 @@ interface CheckOptions {
     tsconfigFilePath?: string; // tsconfig.json的路径
     configFilePath?: string; // tsc-check.config.json路径
     debug?: boolean;
+    monorepo?: boolean;
 }
 
-interface TmpTsconfigCreatorOptions {
-    tsconfigFilePath?: string;
-    files: string[];
-}
+type TmpTsconfigCreatorOptions = Pick<CheckOptions, 'tsconfigFilePath' | 'files'>
 // 生成临时的tsconfig文件
 const createTmpTsconfig = ({ tsconfigFilePath, files }: TmpTsconfigCreatorOptions) => {
     const tsconfigPath = tsconfigFilePath || resolveFromRoot('tsconfig.json');
@@ -59,7 +57,8 @@ export const tscRunner = ({
     files, // 变化的文件列表
     tsconfigFilePath, // tsconfig文件路径
     configFilePath, // tsc-check的配置文件
-    debug
+    debug,
+    monorepo
 }: CheckOptions) => {
     const tmpTsconfigPath = createTmpTsconfig({ tsconfigFilePath, files });
 

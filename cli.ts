@@ -15,6 +15,7 @@ interface Command {
     files: string[]; // Files to be compiled
     debug: boolean; // Whether to enable debug mode
     lintstaged: boolean; // If true, it means executing in lint-staged
+    monorepo: boolean; // 是否是monorepo 暂时没啥用
 }
 export const init = async () => {
     const { version } = await fs.promises
@@ -39,10 +40,14 @@ export const init = async () => {
             },
             lintstaged: {
                 alias: 'l',
-                describe: 'execute in lint-staged',
+                describe: 'Execute in lint-staged',
                 type: 'boolean',
                 demandOption: false, // 非必选
             },
+            monorepo: {
+                alias: 'm',
+                describle: 'Is it a monorepo?'
+            }
         })
         .command<Command>(
             '$0',
@@ -54,13 +59,14 @@ export const init = async () => {
                 });
             },
             async (argv) => {
-                const { files, debug, lintstaged } = argv;
+                const { files, debug, lintstaged, monorepo } = argv;
                 debug && console.log('files:', argv.files, argv);
                 if (files) {
                     const res = await performMultiTSCheck({
                         filenames: files.map((file) => toAbsolutePath(file)),
                         debug,
-                        lintstaged
+                        lintstaged,
+                        monorepo
                     });
 
                     if (!res?.error) {

@@ -8,6 +8,17 @@ import fs from 'fs';
 import ts, { type ParsedCommandLine } from 'typescript';
 import findUp from 'find-up';
 
+type PerformMultiTSCheckOptions = {
+    filenames: string[]; // Files to be compiled
+    lintstaged?: boolean; // If true, it means executing in lint-staged
+    debug?: boolean; // Whether to enable debug mode
+    monorepo?: boolean; // is it a monorepo?
+    include?: string[];
+};
+
+type CategorizeFilesOptions = Pick<PerformMultiTSCheckOptions, 'filenames'>;
+type FilesGroupedByTsconfig = Record<string, string[]>;
+type CommandGeneratorOptions = Pick<PerformMultiTSCheckOptions, 'debug' | 'monorepo' | 'include'>;
 // 执行脚本
 const tscRunnerPath = require.resolve('./lib/tsCompileRunner');
 
@@ -35,13 +46,12 @@ const isInTsConfig = (filePath: string, tsconfigPath: string) => {
     return configParseResult?.fileNames.includes(absoluteFilePath) || false;
 };
 
-type FilesGroupedByTsconfig = Record<string, string[]>;
 // 根据tsconfig.json路径把不同文件进行分类
 // 如：
 // {
 //     'xxx/xxx/tsconfig.json': ['a.ts', 'b.ts']
 // }
-const classifyFilesByTsconfigPath = async (filenames: string[]) => {
+const categorizeFilesByTsconfig = async ({filenames}: CategorizeFilesOptions) => {
     const result: FilesGroupedByTsconfig = {};
 
     for (const filename of filenames) {
@@ -85,16 +95,9 @@ const classifyFilesByTsconfigPath = async (filenames: string[]) => {
     return result;
 };
 
-// !这几个参数是否有必要？
-interface CommandGeneratorOptions {
-    debug?: boolean;
-    trace?: boolean;
-    keepTmp?: boolean;
-    include?: string[];
-}
 // 生成命令,命令中会执行node ./dist/lib/tscRunner.js 用来在lint-staged中执行
 const generateCommands = (result: FilesGroupedByTsconfig, options: CommandGeneratorOptions) => {
-    const { debug, include = [] } = options;
+    const { debug, include = [], monorepo } = options;
     // 拼接命令
     const commands = [];
     for (const key in result) {
@@ -110,6 +113,10 @@ const generateCommands = (result: FilesGroupedByTsconfig, options: CommandGenera
                 rawCommand.push('--debug');
             }
 
+            if (monorepo) {
+                rawCommand.push('--monorepo');
+            }
+
             commands.push(rawCommand.join(' '));
         }
     }
@@ -117,17 +124,12 @@ const generateCommands = (result: FilesGroupedByTsconfig, options: CommandGenera
     return commands;
 };
 
-type PerformMultiTSCheckOptions = {
-    filenames: string[]; // Files to be compiled
-    lintstaged?: boolean; // If true, it means executing in lint-staged
-    debug?: boolean; // Whether to enable debug mode
-};
 
 export const performMultiTSCheck = async (options: PerformMultiTSCheckOptions) => {
     const { filenames, lintstaged = false, debug } = options;
     debug && console.log('tsc-check', filenames);
 
-    const result = await classifyFilesByTsconfigPath(filenames);
+    const result = await categorizeFilesByTsconfig({filenames});
 
     // no files found, throw error
     if (Object.keys(result).length === 0) {

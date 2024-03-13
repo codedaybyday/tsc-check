@@ -12,5 +12,6 @@ tscRunner({
     files: parsedArgs.f.split(','),
     tsconfigFilePath: parsedArgs.p,
     configFilePath: parsedArgs.c,
-    debug: parsedArgs.debug
+    debug: parsedArgs.debug,
+    monorepo: parsedArgs.monorepo
 });

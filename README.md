@@ -6,7 +6,7 @@ Incremental detection tool based on TSC implementation
 
 ## 主要使用场景
 
-在现在的开发构建环境中，往往使用esbuild等非js实现的编译器，他们能带来极速的编译体验。但同时缺点也很明显：缺乏了ts的类型检查，使得ts相关的类型问题会遗留越来越多
+在如今的开发构建环境中，往往使用esbuild等非js实现的编译器，他们能带来极速的编译体验。但同时缺点也很明显：缺乏了ts的类型检查，使得ts相关的类型问题会遗留越来越多
 
 常见场景：
 
@@ -34,33 +34,29 @@ npx tsc-check --files a.ts b.ts --config tsc-check.config.json
 ```js
 // lint-staged.config.cjs
 const path = require('path');
-const { check } = require('tsc-check');
+const {check} = require('tsc-check');
 
 const eslintignorePath = path.join(__dirname, '.eslintignore');
 module.exports = {
-    '**/*.{ts,tsx}': async (filenames) => {
-        const commands = await check({ filenames, quiet: true });
+    '**/*.{ts,tsx}': async filenames => {
+        const commands = await check({filenames, quiet: true});
         commands.push(`prettier ${filenames.join(' ')} --write`);
-        commands.push(
-            `eslint --ignore-path ${eslintignorePath} ${filenames.join(' ')} --fix --quiet --cache`
-        );
+        commands.push(`eslint --ignore-path ${eslintignorePath} ${filenames.join(' ')} --fix --quiet --cache`);
         return commands;
-    },
+    }
 };
+
 ```
 
 3. 配置文件
 
 配置文件名固定为tsc-check.config.json,主要可以用来配置
-
-```js
+```json
 // tsc-check.config.json
 {
-    "include": [], // 一般是全局的声明文件。参考tsconfig.json中compilerOptions.include字段
-    "debug": true, // 调试开头 对应参数 --debug
-    "traceResolution": true, // 会在参数中添加--traceResolution
-    "keepTmp": true, // 保留生成的临时tsconfig.json 主要作用是用来查看生成的文件是否符合预期 对应参数 --keepTmp
-    "monorepo": true, // 是否是个monorepo 对应参数 --monorepo
-    "incremental": true // 参数中加--incremental, 开启增量编译
+  "include": [], // 一般是全局的声明文件。参考tsconfig.json中comilperOptions.include字段
+  "debug": true, // 调试开头
+  "monorepo": true, // 是否是个monorepo
+  "incremental": true, // 参数中加--incremental, 开启增量编译
 }
 ```
