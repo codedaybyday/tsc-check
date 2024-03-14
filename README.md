@@ -17,7 +17,7 @@ Incremental detection tool based on TSC implementation
 ## 安装
 
 ```shell
-npm i tsc-check -D
+npm i delta-tsc-check -D
 ```
 
 ## 使用
