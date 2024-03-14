@@ -61,6 +61,6 @@ module.exports = {
 }
 ```
 
-# TODO
+## TODO
 - [ ] 支持tsc-check.config.json配置文件
 - [ ] monorepo，incremental参数支持
