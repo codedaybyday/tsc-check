@@ -51,7 +51,7 @@ module.exports = {
 3. 配置文件
 
 配置文件名固定为tsc-check.config.json,主要可以用来配置
-```json
+```js
 // tsc-check.config.json
 {
   "include": [], // 一般是全局的声明文件。参考tsconfig.json中comilperOptions.include字段
