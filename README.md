@@ -60,3 +60,7 @@ module.exports = {
   "incremental": true, // 参数中加--incremental, 开启增量编译
 }
 ```
+
+# TODO
+- [ ] 支持tsc-check.config.json配置文件
+- [ ] monorepo，incremental参数支持
