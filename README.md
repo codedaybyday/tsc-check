@@ -1,4 +1,4 @@
-# tsc-check
+# delta-tsc-check
 
 基于tsc实现的类型检查工具,支持monorepo
 
