@@ -1,6 +1,6 @@
 {
     "name": "delta-tsc-check",
-    "version": "0.0.1-beta-2",
+    "version": "0.0.1-beta-3",
     "description": "Incremental detection tool based on TSC implementation",
     "main": "dist/index.js",
     "types": "./dist/index.d.ts",
@@ -13,6 +13,11 @@
     "bin": {
         "tsc-check": "./bin/tsc-check"
     },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/codedaybyday/tsc-check"
+    },
+    "homepage": "https://github.com/codedaybyday/tsc-check",
     "keywords": [
         "tsc",
         "check",

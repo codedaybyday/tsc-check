@@ -1,6 +1,6 @@
 # delta-tsc-check
 
-基于tsc实现的类型检查工具,支持monorepo
+基于tsc实现的增量类型检查工具,支持monorepo
 
 Incremental detection tool based on TSC implementation
 
@@ -34,12 +34,14 @@ npx tsc-check --files a.ts b.ts --config tsc-check.config.json
 ```js
 // lint-staged.config.cjs
 const path = require('path');
-const {check} = require('tsc-check');
+import {performMultiTSCheck} from 'delta-tsc-check';
 
 const eslintignorePath = path.join(__dirname, '.eslintignore');
 module.exports = {
     '**/*.{ts,tsx}': async filenames => {
-        const commands = await check({filenames, quiet: true});
+        // 生成tsc相关的执行命令
+        const {commands = []} = await performMultiTSCheck({filenames, lintstaged: true});
+        // 其他命令 如eslint
         commands.push(`prettier ${filenames.join(' ')} --write`);
         commands.push(`eslint --ignore-path ${eslintignorePath} ${filenames.join(' ')} --fix --quiet --cache`);
         return commands;
@@ -57,9 +59,40 @@ module.exports = {
   "include": [], // 一般是全局的声明文件。参考tsconfig.json中comilperOptions.include字段
   "debug": true, // 调试开头
   "monorepo": true, // 是否是个monorepo
-  "incremental": true, // 参数中加--incremental, 开启增量编译
 }
 ```
+
+## Node API
+
+**performMultiTSCheck API 使用说明**
+
+`performMultiTSCheck` 是一个函数，它用于在lint-staged钩子中执行多个TypeScript检查。该函数属于`delta-tsc-check`库，该库允许你在代码变更时运行TypeScript编译器（tsc）以检查类型错误，并仅对更改的文件进行编译，从而提高性能。
+
+### 函数签名
+
+```javascript
+import { performMultiTSCheck } from 'delta-tsc-check';
+
+// 函数签名
+async function performMultiTSCheck({
+    filenames, // 要检查的文件名数组
+    lintstaged = false, // 是否在lint-staged中使用，默认为false
+    debug = false, // 是否开始debug模式，默认为false
+    include = [], // 需要包含进来的ts/tsx/d.ts文件，一般是全局声明文件
+}): Promise<{ commands?: string[], error: Error }> {
+  // ...
+}
+
+### 参数
+
+- **filenames** (`string[]`): 需要进行TypeScript检查的文件名数组。
+- **lintstaged** (`boolean`): 是否在lint-staged环境中运行。如果是，则函数会返回与lint-staged兼容的命令数组。
+- **debug**: 是否开始debug模式，默认为false
+- **include**: 需要包含进来的ts/tsx/d.ts文件，一般是全局声明文件,参考tsconfig.include的功能
+
+### 返回值
+
+- **Promise<{ commands?: string[],err: Error }>**: 返回一个Promise，解析后得到一个对象，该对象包含`commands`和`error`属性。`commands`是一个字符串数组，包含了要执行的命令。
 
 ## TODO
 - [ ] 支持tsc-check.config.json配置文件
