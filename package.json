@@ -1,6 +1,6 @@
 {
     "name": "delta-tsc-check",
-    "version": "0.0.1-beta-3",
+    "version": "0.0.1-beta-4",
     "description": "Incremental detection tool based on TSC implementation",
     "main": "dist/index.js",
     "types": "./dist/index.d.ts",

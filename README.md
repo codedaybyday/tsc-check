@@ -82,6 +82,7 @@ async function performMultiTSCheck({
 }): Promise<{ commands?: string[], error: Error }> {
   // ...
 }
+```
 
 ### 参数
 
