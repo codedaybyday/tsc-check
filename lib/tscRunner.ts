@@ -42,6 +42,7 @@ const createTmpTsconfig = ({ tsconfigFilePath, files }: TmpTsconfigCreatorOption
         compilerOptions: {
             ...tsconfig.compilerOptions,
             skipLibCheck: true,
+            composite: false
         },
         files,
         include: [],
