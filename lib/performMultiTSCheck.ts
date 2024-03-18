@@ -157,9 +157,17 @@ export const performMultiTSCheck = async (options: PerformMultiTSCheckOptions) =
     }
 
     try {
-        const stdout = execSync(commands.join('&&'));
+        const stdout = execSync(commands.join('&&'), {stdio: 'pipe', encoding: 'utf8'});
+
         if (debug) {
-            console.log(stdout.toString('utf8'));
+            console.log(stdout);
+        }
+
+        if (stdout) {
+            return {
+                error: stdout,
+                data: stdout,
+            };
         }
 
         return {
@@ -167,6 +175,7 @@ export const performMultiTSCheck = async (options: PerformMultiTSCheckOptions) =
             data: stdout,
         };
     } catch (error: any) {
+        console.error(error.message);
         return {
             error,
             data: null,

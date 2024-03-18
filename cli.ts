@@ -74,17 +74,11 @@ export const init = async () => {
                     }
 
                     if (res?.error) {
-                        const stderr = res.error?.stderr?.toString('utf8');
-                        const stdout = res.error?.stdout?.toString('utf8');
+                        const stderr = res.error;
 
                         if (stderr) {
                             console.error('\x1b[31m%s\x1b[0m', 'tsc-check stderr:');
                             console.error(stderr);
-                        }
-
-                        if (stdout) {
-                            console.log('\x1b[31m%s\x1b[0m', 'tsc-check stdout:');
-                            console.log(stdout);
                         }
                     }
                 }
