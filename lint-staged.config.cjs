@@ -1,3 +1,3 @@
 module.exports = {
-    '*.ts': ['node bin/tsc-check --debug --files'],
+    '*.ts': ['node bin/tsc-check --lintstaged --debug --files'],
 };
