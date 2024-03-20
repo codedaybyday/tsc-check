@@ -1,3 +1,3 @@
 module.exports = {
-    '**/*.ts': ['npx tsc-check --files'],
+    '*.ts': ['npx tsc-check --debug --files'],
 };
