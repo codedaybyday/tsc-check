@@ -45,6 +45,7 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
+    "delta-tsc-check": "0.0.1-beta-5",
     "find-up": "5.0.0",
     "json5": "^2.2.3",
     "minimist": "^1.2.8",

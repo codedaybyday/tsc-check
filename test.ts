@@ -19,3 +19,6 @@ function greet(person: Person) {
 console.log(greet(person));
 console.log(greet(person));
 console.log(greet(person));
+console.log(greet(person));
+console.log(greet(person));
+console.log(greet(person));
