@@ -45,7 +45,7 @@ api版本如下，cli版本下面cli的说明部分
 ```js
 // lint-staged.config.cjs
 const path = require('path');
-import {performMultiTSCheck} from 'delta-tsc-check';
+const {performMultiTSCheck} = require('delta-tsc-check');
 
 const eslintignorePath = path.join(__dirname, '.eslintignore');
 module.exports = {

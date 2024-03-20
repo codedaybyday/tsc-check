@@ -42,7 +42,7 @@ npx tsc-check --files a.ts b.ts --config tsc-check.config.json
 ```js
 // lint-staged.config.cjs
 const path = require('path');
-import {performMultiTSCheck} from 'delta-tsc-check';
+const {performMultiTSCheck} = require('delta-tsc-check');
 
 const eslintignorePath = path.join(__dirname, '.eslintignore');
 module.exports = {
