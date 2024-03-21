@@ -16,3 +16,4 @@ package-lock.json
 *.sln
 
 *.tsbuildinfo
+*.tmp.json

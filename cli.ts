@@ -38,16 +38,16 @@ export const init = async () => {
                 type: 'boolean',
                 demandOption: false, // 非必选
             },
-            lintstaged: {
-                alias: 'l',
-                describe: 'Execute in lint-staged',
-                type: 'boolean',
-                demandOption: false, // 非必选
-            },
+            // lintstaged: {
+            //     alias: 'l',
+            //     describe: 'Execute in lint-staged',
+            //     type: 'boolean',
+            //     demandOption: false, // 非必选
+            // },
             monorepo: {
                 alias: 'm',
-                describle: 'Is it a monorepo?'
-            }
+                describle: 'Is it a monorepo?',
+            },
         })
         .command<Command>(
             '$0',
@@ -66,7 +66,7 @@ export const init = async () => {
                         filenames: files.map((file) => toAbsolutePath(file)),
                         debug,
                         lintstaged,
-                        monorepo
+                        monorepo,
                     });
 
                     if (!res?.error) {
@@ -75,16 +75,13 @@ export const init = async () => {
 
                     if (res?.error) {
                         const stderr = res.error;
-
-                        if (stderr) {
-                            console.error('\x1b[31m%s\x1b[0m', 'tsc-check stderr:');
-                            console.error(stderr);
-                        }
+                        throw new Error(stderr);
                     }
                 }
             }
         )
         .demandCommand(1)
         .strict()
+        .showHelpOnFail(false)
         .parse();
 };

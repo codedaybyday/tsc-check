@@ -1,4 +1,5 @@
 # delta-tsc-check
+
 [English Documentation](README.md) | [中文文档](README.zh.md)
 
 基于tsc实现的增量类型检查工具,支持monorepo
@@ -14,15 +15,15 @@ Incremental detection tool based on TSC implementation
 ## 主要场景
 
 1. **pre-commit 阶段代码增量检查**：
-	* 在提交代码前，使用 `tsc-check` 进行增量检查，即仅对发生变更的文件进行类型检查。这大大减少了检查的时间，同时确保每次提交的代码都是类型安全的。
-	* 结合 `lint-staged` 使用，可以在提交阶段自动运行 `tsc-check`，确保代码质量。
+
+    - 在提交代码前，使用 `tsc-check` 进行增量检查，即仅对发生变更的文件进行类型检查。这大大减少了检查的时间，同时确保每次提交的代码都是类型安全的。
+    - 结合 `lint-staged` 使用，可以在提交阶段自动运行 `tsc-check`，确保代码质量。
 
 2. **命令行单独检查单个文件**：
-	* 在开发过程中，开发者可能需要对单个文件进行类型检查，以验证其类型正确性。通过 `tsc-check`，可以轻松地对单个文件进行类型检查。
+    - 在开发过程中，开发者可能需要对单个文件进行类型检查，以验证其类型正确性。通过 `tsc-check`，可以轻松地对单个文件进行类型检查。
 3. **流水线上进行代码校验**：
-	* 在代码合并或发布前，通常需要进行一系列的代码校验，以确保代码的质量。`tsc-check` 可以作为流水线上的一个步骤，对代码进行类型检查。
-	* 如果在流水线上发现类型错误，可以阻止代码的合并或发布，从而确保代码库的稳定性。
-
+    - 在代码合并或发布前，通常需要进行一系列的代码校验，以确保代码的质量。`tsc-check` 可以作为流水线上的一个步骤，对代码进行类型检查。
+    - 如果在流水线上发现类型错误，可以阻止代码的合并或发布，从而确保代码库的稳定性。
 
 ## 安装
 
@@ -40,30 +41,30 @@ npx tsc-check --files a.ts b.ts --config tsc-check.config.json
 ```
 
 2. 结合lint-staged
-api版本如下，cli版本下面cli的说明部分
+   api版本如下，cli版本下面cli的说明部分
 
 ```js
 // lint-staged.config.cjs
 const path = require('path');
-const {performMultiTSCheck} = require('delta-tsc-check');
+const { performMultiTSCheck } = require('delta-tsc-check');
 
 const eslintignorePath = path.join(__dirname, '.eslintignore');
 module.exports = {
-    '**/*.{ts,tsx}': async filenames => {
+    '**/*.{ts,tsx}': async (filenames) => {
         // 生成tsc相关的执行命令
-        const {commands = []} = await performMultiTSCheck({filenames, lintstaged: true});
+        const { commands = [] } = await performMultiTSCheck({ filenames, lintstaged: true });
         // 其他命令 如eslint
         commands.push(`prettier ${filenames.join(' ')} --write`);
         commands.push(`eslint --ignore-path ${eslintignorePath} ${filenames.join(' ')} --fix --quiet --cache`);
         return commands;
-    }
+    },
 };
-
 ```
 
 3. 配置文件(待完成)
 
 配置文件名固定为tsc-check.config.json,主要可以用来配置
+
 ```js
 // tsc-check.config.json
 {
@@ -97,14 +98,14 @@ async function performMultiTSCheck({
 
 ### 参数
 
-- **filenames** (`string[]`): 需要进行TypeScript检查的文件名数组。
-- **lintstaged** (`boolean`): 是否在lint-staged环境中运行。如果是，则函数会返回与lint-staged兼容的命令数组。
-- **debug**: 是否开始debug模式，默认为false
-- **include**: 需要包含进来的ts/tsx/d.ts文件，一般是全局声明文件,参考tsconfig.include的功能
+-   **filenames** (`string[]`): 需要进行TypeScript检查的文件名数组。
+-   **lintstaged** (`boolean`): 是否在lint-staged环境中运行。如果是，则函数会返回与lint-staged兼容的命令数组。
+-   **debug**: 是否开始debug模式，默认为false
+-   **include**: 需要包含进来的ts/tsx/d.ts文件，一般是全局声明文件,参考tsconfig.include的功能
 
 ### 返回值
 
-- **Promise<{ commands?: string[],error: Error }>**: 返回一个Promise，解析后得到一个对象，该对象包含`commands`和`error`属性。`commands`是一个字符串数组，包含了要执行的命令。
+-   **Promise<{ commands?: string[],error: Error }>**: 返回一个Promise，解析后得到一个对象，该对象包含`commands`和`error`属性。`commands`是一个字符串数组，包含了要执行的命令。
 
 ## CLI
 
@@ -120,20 +121,20 @@ tsc-check [options]
 
 ### 可用选项
 
-- **--files, -f**
-  - **描述**：指定要检查的文件。这是必需的选项。
-  - **类型**：数组（可以指定多个文件或目录）。
-  - **示例**：`--files src/index.ts
+-   **--files, -f**
 
-- **--debug, -d**
-  - **描述**：启用调试模式。这将输出额外的调试信息。
-  - **类型**：布尔值（true/false）。
-  - **示例**：`--debug`
-  - **--lintstaged, -l**
-  - **描述**：在 lint-staged 环境中执行。这将调整命令的输出和行为，以与 lint-staged 兼容。
-  - **类型**：布尔值（true/false）。
-  - **示例**：`--lintstaged`
+    -   **描述**：指定要检查的文件。这是必需的选项。
+    -   **类型**：数组（可以指定多个文件或目录）。
+    -   **示例**：`--files src/index.ts
 
+-   **--debug, -d**
+    -   **描述**：启用调试模式。这将输出额外的调试信息。
+    -   **类型**：布尔值（true/false）。
+    -   **示例**：`--debug`
+-   ~~- -lintstaged, -l~~
+    -   ~~描述：在 lint-staged 环境中执行。这将调整命令的输出和行为，以与 lint-staged 兼容。~~
+    -   ~~类型：布尔值（true/false）。~~
+    -   ~~示例：`--lintstaged`~~
 
 ### 使用示例
 
@@ -155,7 +156,8 @@ tsc-check --files file1.ts file2.ts
 
 ```json
 {
-  "*.{ts,tsx}": ["tsc-check --lintstaged --files"]
+    - "*.{ts,tsx}": ["tsc-check --lintstaged --files"]
+    + "*.{ts,tsx}": ["tsc-check --files"]
 }
 ```
 
@@ -166,5 +168,6 @@ tsc-check --files myfile.ts --debug
 ```
 
 ## TODO
-- [ ] 支持tsc-check.config.json配置文件
-- [ ] --files参数支持glob
+
+-   [ ] 支持tsc-check.config.json配置文件
+-   [ ] --files参数支持glob

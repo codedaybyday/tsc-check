@@ -1,4 +1,5 @@
 # delta-tsc-check
+
 [English Documentation](README.md) | [中文文档](README.zh.md)
 
 Incremental detection tool based on TSC implementation
@@ -12,15 +13,15 @@ To address this pain point, the `tsc-check` tool was created. It focuses on prov
 ## Key Scenarios
 
 1. **Incremental code checking during the pre-commit stage**：
-	* Before committing code, use `tsc-check` for incremental checking, which only checks the types of changed files. This significantly reduces the time spent checking while ensuring each commit is type-safe.
-	* Used in combination with `lint-staged`, `tsc-check` can be run automatically during the commit stage to ensure code quality.
+
+    - Before committing code, use `tsc-check` for incremental checking, which only checks the types of changed files. This significantly reduces the time spent checking while ensuring each commit is type-safe.
+    - Used in combination with `lint-staged`, `tsc-check` can be run automatically during the commit stage to ensure code quality.
 
 2. **Command-line individual file check**：
-	* During development, developers may need to type-check a single file to verify its type correctness. With `tsc-check`, it is easy to perform type checking on a single file.。
+    - During development, developers may need to type-check a single file to verify its type correctness. With `tsc-check`, it is easy to perform type checking on a single file.。
 3. **Code validation on the pipeline:**：
-	* Before code merging or release, a series of code validations are usually required to ensure code quality. `tsc-check` can be used as a step on the pipeline to perform type checking.
-	* If type errors are discovered on the pipeline, it can prevent the code from being merged or released, thus ensuring the stability of the codebase.
-
+    - Before code merging or release, a series of code validations are usually required to ensure code quality. `tsc-check` can be used as a step on the pipeline to perform type checking.
+    - If type errors are discovered on the pipeline, it can prevent the code from being merged or released, thus ensuring the stability of the codebase.
 
 ## Installation
 
@@ -42,25 +43,25 @@ npx tsc-check --files a.ts b.ts --config tsc-check.config.json
 ```js
 // lint-staged.config.cjs
 const path = require('path');
-const {performMultiTSCheck} = require('delta-tsc-check');
+const { performMultiTSCheck } = require('delta-tsc-check');
 
 const eslintignorePath = path.join(__dirname, '.eslintignore');
 module.exports = {
-    '**/*.{ts,tsx}': async filenames => {
+    '**/*.{ts,tsx}': async (filenames) => {
         // Generate tsc-related execution commands
-        const {commands = []} = await performMultiTSCheck({filenames, lintstaged: true});
+        const { commands = [] } = await performMultiTSCheck({ filenames, lintstaged: true });
         // Other commands such as eslint
         commands.push(`prettier ${filenames.join(' ')} --write`);
         commands.push(`eslint --ignore-path ${eslintignorePath} ${filenames.join(' ')} --fix --quiet --cache`);
         return commands;
-    }
+    },
 };
-
 ```
 
 3. Configuration file (to be completed)
 
 The configuration file is named tsc-check.config.json, which can mainly be used to configure
+
 ```js
 // tsc-check.config.json
 {
@@ -94,14 +95,14 @@ async function performMultiTSCheck({
 
 ### Parameters
 
-- **filenames** (`string[]`): An array of filenames that need TypeScript checking.
-- **lintstaged** (`boolean`): Whether to run in a lint-staged environment. If true, the function will return a command array compatible with lint-staged.
-- **debug**: Whether to enable debug mode, default is false.
-- **include**: Files to be included such as ts/tsx/d.ts, generally global declaration files, refer to the functionality of tsconfig.include.
+-   **filenames** (`string[]`): An array of filenames that need TypeScript checking.
+-   **lintstaged** (`boolean`): Whether to run in a lint-staged environment. If true, the function will return a command array compatible with lint-staged.
+-   **debug**: Whether to enable debug mode, default is false.
+-   **include**: Files to be included such as ts/tsx/d.ts, generally global declaration files, refer to the functionality of tsconfig.include.
 
 ### Return Value
 
-- **Promise<{ commands?: string[],error: Error }>**: Returns a Promise that resolves to an object containing `commands` and `error` properties. `commands` is an array of strings that includes the commands to be executed.
+-   **Promise<{ commands?: string[],error: Error }>**: Returns a Promise that resolves to an object containing `commands` and `error` properties. `commands` is an array of strings that includes the commands to be executed.
 
 ## CLI
 
@@ -117,19 +118,20 @@ tsc-check [options]
 
 ### Available Options
 
-- **--files, -f**
-  - **Description**：Specifies the files to check. This is a required option.
-  - **Type**：Array (multiple files or directories can be specified).
-  - **Example**：`--files src/index.ts
+-   **--files, -f**
 
-- **--debug, -d**
-  - **Description**：Enables debug mode. This will output additional debugging information.
-  - **Type**：Boolean (true/false).
-  - **示Example例**：`--debug`
-  - **--lintstaged, -l**
-  - **Description**：Executes in the `lint-staged` environment. This will adjust the command's output and behavior to be compatible with `lint-staged`.
-  - **Type**：Boolean (true/false).
-  - **Example**：`--lintstaged`
+    -   **Description**：Specifies the files to check. This is a required option.
+    -   **Type**：Array (multiple files or directories can be specified).
+    -   **Example**：`--files src/index.ts
+
+-   **--debug, -d**
+    -   **Description**：Enables debug mode. This will output additional debugging information.
+    -   **Type**：Boolean (true/false).
+    -   **示Example例**：`--debug`
+-   ~~**--lintstaged, -l**~~
+    -   ~~**Description**：Executes in the `lint-staged` environment. This will adjust the command's output and behavior to be compatible with `lint-staged`.~~
+    -   ~~**Type**：Boolean (true/false).~~
+    -   ~~**Example**：`--lintstaged`~~
 
 ### Usage Examples
 
@@ -151,7 +153,8 @@ If you have used `tsc-check` in your `lint-staged` configuration, you can specif
 
 ```json
 {
-  "*.{ts,tsx}": ["tsc-check --lintstaged --files"]
+    - "*.{ts,tsx}": ["tsc-check --lintstaged --files"]
+    + "*.{ts,tsx}": ["tsc-check --files"]
 }
 ```
 
@@ -162,5 +165,6 @@ tsc-check --files myfile.ts --debug
 ```
 
 ## TODO
-- [ ] Support for tsc-check.config.json configuration file
-- [ ] Support glob patterns with --files option
+
+-   [ ] Support for tsc-check.config.json configuration file
+-   [ ] Support glob patterns with --files option

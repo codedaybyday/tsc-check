@@ -51,7 +51,7 @@ const isInTsConfig = (filePath: string, tsconfigPath: string) => {
 // {
 //     'xxx/xxx/tsconfig.json': ['a.ts', 'b.ts']
 // }
-const categorizeFilesByTsconfig = async ({filenames}: CategorizeFilesOptions) => {
+const categorizeFilesByTsconfig = async ({ filenames }: CategorizeFilesOptions) => {
     const result: FilesGroupedByTsconfig = {};
 
     for (const filename of filenames) {
@@ -99,7 +99,7 @@ const categorizeFilesByTsconfig = async ({filenames}: CategorizeFilesOptions) =>
 const generateCommands = (result: FilesGroupedByTsconfig, options: CommandGeneratorOptions) => {
     const { debug, include = [], monorepo } = options;
     // 拼接命令
-    const commands = [];
+    const commands: string[] = [];
     for (const key in result) {
         // 没有文件不生成
         if (!Object.prototype.hasOwnProperty(key) && result[key].length > 0) {
@@ -124,12 +124,11 @@ const generateCommands = (result: FilesGroupedByTsconfig, options: CommandGenera
     return commands;
 };
 
-
 export const performMultiTSCheck = async (options: PerformMultiTSCheckOptions) => {
     const { filenames, lintstaged = false, debug } = options;
     debug && console.log('tsc-check', filenames);
 
-    const result = await categorizeFilesByTsconfig({filenames});
+    const result = await categorizeFilesByTsconfig({ filenames });
 
     // no files found, throw error
     if (Object.keys(result).length === 0) {
@@ -157,7 +156,7 @@ export const performMultiTSCheck = async (options: PerformMultiTSCheckOptions) =
     }
 
     try {
-        const stdout = execSync(commands.join('&&'), {stdio: 'pipe', encoding: 'utf8'});
+        const stdout = execSync(commands.join('&&'), { stdio: 'pipe', encoding: 'utf8' });
 
         if (debug) {
             console.log(stdout);
