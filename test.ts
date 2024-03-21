@@ -18,3 +18,4 @@ function greet(person: Person) {
 // 调用函数
 console.log(greet(person));
 console.log(greet(person));
+console.log(greet(person));
