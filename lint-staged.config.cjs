@@ -1,3 +1,4 @@
+const {} = require('./');
 module.exports = {
-    '*.ts': ['node bin/tsc-check --lintstaged --debug --files'],
+    '*.ts': ['node bin/tsc-check --files'],
 };

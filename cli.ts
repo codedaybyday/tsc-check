@@ -82,5 +82,6 @@ export const init = async () => {
         )
         .demandCommand(1)
         .strict()
+        .showHelpOnFail(false)
         .parse();
 };
