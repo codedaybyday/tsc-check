@@ -154,7 +154,7 @@ tsc-check --files file1.ts file2.ts
 
 如果你在 `lint-staged` 配置中使用了 `tsc-check`，你可以这样指定选项：
 
-```json
+```diff
 {
     - "*.{ts,tsx}": ["tsc-check --lintstaged --files"]
     + "*.{ts,tsx}": ["tsc-check --files"]
