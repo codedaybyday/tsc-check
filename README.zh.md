@@ -1,6 +1,6 @@
 # delta-tsc-check
 
-[English Documentation](README.md) | [中文文档](README.zh.md)
+[English Documentation](README.md) | [中文文档](README.zh.md) | [demo](https://github.com/codedaybyday/delta-tsc-check-demo)
 
 基于tsc实现的增量类型检查工具,支持monorepo
 

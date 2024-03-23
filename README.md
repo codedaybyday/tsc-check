@@ -1,6 +1,6 @@
 # delta-tsc-check
 
-[English Documentation](README.md) | [中文文档](README.zh.md)
+[English Documentation](README.md) | [中文文档](README.zh.md) | [demo](https://github.com/codedaybyday/delta-tsc-check-demo)
 
 Incremental detection tool based on TSC implementation
 
