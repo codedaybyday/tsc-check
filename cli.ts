@@ -2,6 +2,7 @@ import yargs from 'yargs';
 import path from 'path';
 import fs from 'fs';
 import { performMultiTSCheck } from './lib/perform-multi-tsc';
+import { globSync } from 'glob';
 
 const toAbsolutePath = (filePath: string) => {
     // Check if the path is already an absolute path
@@ -60,7 +61,20 @@ export const init = async () => {
             },
             async (argv) => {
                 const { files, debug, lintstaged, monorepo } = argv;
-                debug && console.log('files:', argv.files, argv);
+
+                const globFiles = files.reduce<string[]>((result, file) => {
+                    const absolutePath = toAbsolutePath(file);
+                    const matches = globSync(absolutePath);
+                    result.push(...matches);
+
+                    return result;
+                }, []);
+
+                if (debug) {
+                    console.log('files:', argv.files, argv);
+                    console.log('globFiles', globFiles);
+                }
+
                 if (files) {
                     const res = await performMultiTSCheck({
                         filenames: files.map((file) => toAbsolutePath(file)),

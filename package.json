@@ -41,6 +41,7 @@
     },
     "dependencies": {
         "find-up": "5.0.0",
+        "glob": "^10.3.10",
         "json5": "^2.2.3",
         "minimist": "^1.2.8",
         "yargs": "^17.7.2"

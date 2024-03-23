@@ -170,4 +170,4 @@ tsc-check --files myfile.ts --debug
 ## TODO
 
 -   [ ] 支持tsc-check.config.json配置文件
--   [ ] --files参数支持glob
+-   [ x ] --files参数支持glob

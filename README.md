@@ -166,5 +166,5 @@ tsc-check --files myfile.ts --debug
 
 ## TODO
 
--   [ ] Support for tsc-check.config.json configuration file
--   [ ] Support glob patterns with --files option
+-   [] Support for tsc-check.config.json configuration file
+-   [ x ] Support glob patterns with --files option
