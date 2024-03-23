@@ -34,7 +34,7 @@ npm i delta-tsc-check -D
 1. Command line
 
 ```shell
-npx tsc-check --files a.ts b.ts --config tsc-check.config.json
+npx tsc-check --files a.ts b.ts  src/*.ts
 
 ```
 
@@ -145,6 +145,8 @@ tsc-check --files myfile.ts
 
 ```bash
 tsc-check --files file1.ts file2.ts
+// or
+tsc-check --files *.ts
 ```
 
 3. **Use in lint-staged**

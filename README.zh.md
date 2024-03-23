@@ -36,7 +36,7 @@ npm i delta-tsc-check -D
 1. 命令行
 
 ```shell
-npx tsc-check --files a.ts b.ts --config tsc-check.config.json
+npx tsc-check --files a.ts b.ts  src/*.ts
 
 ```
 
@@ -148,6 +148,8 @@ tsc-check --files myfile.ts
 
 ```bash
 tsc-check --files file1.ts file2.ts
+// or
+tsc-check --files *.ts
 ```
 
 3. **在 lint-staged 中使用**
