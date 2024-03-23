@@ -5,5 +5,6 @@ export default defineConfig({
     splitting: true,
     minify: process.env.NODE_ENV === 'production',
     dts: './index.ts',
-    treeshake: true
+    treeshake: true,
+    external: ['typescript']
 });
