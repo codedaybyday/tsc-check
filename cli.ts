@@ -1,7 +1,7 @@
 import yargs from 'yargs';
 import path from 'path';
 import fs from 'fs';
-import { performMultiTSCheck } from './lib/performMultiTSCheck';
+import { performMultiTSCheck } from './lib/perform-multi-tsc';
 
 const toAbsolutePath = (filePath: string) => {
     // Check if the path is already an absolute path

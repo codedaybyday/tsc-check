@@ -3,7 +3,7 @@
  * @fileoverview 基于tscRunner实现的单独的运行脚本
  */
 import minimist from 'minimist';
-import {tscRunner} from './tscRunner';
+import { tscRunner } from './tsc-runner';
 
 const args = process.argv.slice(2);
 const parsedArgs = minimist(args);
@@ -13,5 +13,5 @@ tscRunner({
     tsconfigFilePath: parsedArgs.p,
     configFilePath: parsedArgs.c,
     debug: parsedArgs.debug,
-    monorepo: parsedArgs.monorepo
+    monorepo: parsedArgs.monorepo,
 });

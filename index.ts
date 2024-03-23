@@ -1,2 +1,2 @@
-export * from './lib/performMultiTSCheck';
-export * from './lib/tscRunner';
+export * from './lib/perform-multi-tsc';
+export * from './lib/tsc-runner';

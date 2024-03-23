@@ -20,7 +20,7 @@ type CategorizeFilesOptions = Pick<PerformMultiTSCheckOptions, 'filenames'>;
 type FilesGroupedByTsconfig = Record<string, string[]>;
 type CommandGeneratorOptions = Pick<PerformMultiTSCheckOptions, 'debug' | 'monorepo' | 'include'>;
 // 执行脚本
-const tscRunnerPath = require.resolve('./lib/tsCompileRunner');
+const tscRunnerPath = require.resolve('./lib/ts-compile-script');
 
 // 缓存解析的配置
 const PARSED_CONFIG_CACHE = new Map<string, ParsedCommandLine>();
@@ -35,7 +35,6 @@ const parseJsonConfigFileContent = (tsconfigPath: string) => {
 
     const configObject = result.config;
     const parsedConfig = ts.parseJsonConfigFileContent(configObject, ts.sys, basePath);
-
     PARSED_CONFIG_CACHE.set(tsconfigPath, parsedConfig);
     return parsedConfig;
 };
