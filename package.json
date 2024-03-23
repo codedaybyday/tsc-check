@@ -1,6 +1,6 @@
 {
     "name": "delta-tsc-check",
-    "version": "0.0.1-beta-5",
+    "version": "0.0.1",
     "description": "Incremental detection tool based on TSC implementation",
     "main": "dist/index.js",
     "types": "./dist/index.d.ts",
@@ -8,8 +8,8 @@
         "./dist"
     ],
     "scripts": {
-        "build": "rm -rf dist/* && NODE_ENV=production tsup --config tsup.config.ts",
-        "build:dev": "rm -rf dist/* && tsup --config tsup.config.ts"
+        "build": "rm -rf dist/* &&cross-env NODE_ENV=production tsup --config tsup.config.ts",
+        "build:dev": "rm -rf dist/* &&cross-env tsup --config tsup.config.ts"
     },
     "bin": {
         "tsc-check": "./bin/tsc-check"
@@ -34,6 +34,7 @@
         "@types/minimist": "^1.2.5",
         "@types/node": "^20.11.24",
         "@types/yargs": "^17.0.32",
+        "cross-env": "^7.0.3",
         "git-cz": "^4.9.0",
         "prettier": "3.2.5",
         "tsup": "^8.0.2",
