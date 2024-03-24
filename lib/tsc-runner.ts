@@ -2,7 +2,7 @@
  * @author liubeijing
  * @fileoverview 该文件是执行tsc-check最小的执行单位，是基于tsc -p的封装
  */
-import { spawnSync } from 'child_process';
+import { execSync } from 'child_process';
 import fs from 'fs';
 import { dirname, join, resolve } from 'path';
 import json5 from 'json5';
@@ -63,16 +63,9 @@ export const tscRunner = ({
 }: CheckOptions) => {
     const tmpTsconfigPath = createTmpTsconfig({ tsconfigFilePath, files });
 
-    const spawnArgs = ['-p', tmpTsconfigPath, '--noEmit', '--incremental'];
-    const tscFile = process.versions.pnp
-        ? 'tsc'
-        : resolveFromModule('typescript', `./bin/tsc${process.platform === 'win32' ? '.cmd' : ''}`);
-    const spawnSyncReturns = spawnSync(tscFile, spawnArgs, {
-        stdio: 'inherit',
-    });
-
+    const args = ['-p', tmpTsconfigPath, '--noEmit', '--incremental'];
+    const res = execSync(`npx tsc ${args.join(' ')}`, {stdio: 'inherit', encoding: 'utf8'});
     // 结束后清除临时配置文件
     !debug && fs.unlinkSync(tmpTsconfigPath);
-
-    return spawnSyncReturns;
+    return res;
 };

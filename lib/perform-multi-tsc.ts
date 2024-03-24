@@ -20,7 +20,7 @@ type CategorizeFilesOptions = Pick<PerformMultiTSCheckOptions, 'filenames'>;
 type FilesGroupedByTsconfig = Record<string, string[]>;
 type CommandGeneratorOptions = Pick<PerformMultiTSCheckOptions, 'debug' | 'monorepo' | 'include'>;
 // 执行脚本
-const tscRunnerPath = require.resolve('./lib/ts-compile-script');
+const tscCompileScriptPath = path.join(__dirname, './lib/ts-compile-script');
 
 // 缓存解析的配置
 const PARSED_CONFIG_CACHE = new Map<string, ParsedCommandLine>();
@@ -102,7 +102,7 @@ const generateCommands = (result: FilesGroupedByTsconfig, options: CommandGenera
     for (const key in result) {
         // 没有文件不生成
         if (!Object.prototype.hasOwnProperty(key) && result[key].length > 0) {
-            const rawCommand = [`node ${tscRunnerPath}`, '--noEmit', `-p ${key}`, `-f ${result[key].join(',')}`];
+            const rawCommand = [`node ${tscCompileScriptPath}`, '--noEmit', `-p ${key}`, `-f ${result[key].join(',')}`];
 
             if (include?.length > 0) {
                 rawCommand.push(`-i ${include.join(',')}`);
@@ -155,10 +155,10 @@ export const performMultiTSCheck = async (options: PerformMultiTSCheckOptions) =
     }
 
     try {
-        const stdout = execSync(commands.join('&&'), { stdio: 'pipe', encoding: 'utf8' });
-
+        const stdout = execSync(commands.join('&&'), { stdio: 'inherit', encoding: 'utf8' });
+        console.log(333, stdout);
         if (debug) {
-            console.log(stdout);
+            console.log('stdout:', stdout);
         }
 
         if (stdout) {
@@ -173,7 +173,6 @@ export const performMultiTSCheck = async (options: PerformMultiTSCheckOptions) =
             data: stdout,
         };
     } catch (error: any) {
-        console.error(error.message);
         return {
             error,
             data: null,
