@@ -24,7 +24,7 @@ interface CheckOptions {
     monorepo?: boolean;
 }
 
-type TmpTsconfigCreatorOptions = Pick<CheckOptions, 'tsconfigFilePath' | 'files'>
+type TmpTsconfigCreatorOptions = Pick<CheckOptions, 'tsconfigFilePath' | 'files'>;
 // 生成临时的tsconfig文件
 const createTmpTsconfig = ({ tsconfigFilePath, files }: TmpTsconfigCreatorOptions) => {
     const tsconfigPath = tsconfigFilePath || resolveFromRoot('tsconfig.json');
@@ -42,7 +42,7 @@ const createTmpTsconfig = ({ tsconfigFilePath, files }: TmpTsconfigCreatorOption
         compilerOptions: {
             ...tsconfig.compilerOptions,
             skipLibCheck: true,
-            composite: false
+            composite: false,
         },
         files,
         include: [],
@@ -59,12 +59,12 @@ export const tscRunner = ({
     tsconfigFilePath, // tsconfig文件路径
     configFilePath, // tsc-check的配置文件
     debug,
-    monorepo
+    monorepo,
 }: CheckOptions) => {
     const tmpTsconfigPath = createTmpTsconfig({ tsconfigFilePath, files });
 
     const args = ['-p', tmpTsconfigPath, '--noEmit', '--incremental'];
-    const res = execSync(`npx tsc ${args.join(' ')}`, {stdio: 'inherit', encoding: 'utf8'});
+    const res = execSync(`npx tsc ${args.join(' ')}`, { stdio: 'inherit', encoding: 'utf8' });
     // 结束后清除临时配置文件
     !debug && fs.unlinkSync(tmpTsconfigPath);
     return res;

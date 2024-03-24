@@ -144,10 +144,7 @@ export const performMultiTSCheck = async (options: PerformMultiTSCheckOptions) =
     const commands = generateCommands(result, options);
     // return commands to lint-staged
     if (lintstaged) {
-        return {
-            error: null,
-            commands,
-        };
+        return commands;
     }
 
     if (!commands || commands.length === 0) {
@@ -156,26 +153,10 @@ export const performMultiTSCheck = async (options: PerformMultiTSCheckOptions) =
 
     try {
         const stdout = execSync(commands.join('&&'), { stdio: 'inherit', encoding: 'utf8' });
-        console.log(333, stdout);
         if (debug) {
             console.log('stdout:', stdout);
         }
-
-        if (stdout) {
-            return {
-                error: stdout,
-                data: stdout,
-            };
-        }
-
-        return {
-            error: null,
-            data: stdout,
-        };
-    } catch (error: any) {
-        return {
-            error,
-            data: null,
-        };
+    } catch (error) {
+        throw '';
     }
 };

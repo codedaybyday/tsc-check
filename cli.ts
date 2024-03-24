@@ -76,22 +76,20 @@ export const init = async () => {
                 }
 
                 if (files) {
-                    const res = await performMultiTSCheck({
+                    await performMultiTSCheck({
                         filenames: files.map((file) => toAbsolutePath(file)),
                         debug,
                         lintstaged,
                         monorepo,
                     });
 
-                    if (!res?.error) {
-                        console.log('\x1b[32m%s\x1b[0m', 'tsc check success!');
-                    }
+                    console.log('\x1b[32m%s\x1b[0m', 'tsc check success!');
 
                     // 这里是所有错误上报的入口，内部的错误会先捕获返回到这里再抛出
-                    if (res?.error) {
-                        const err = res.error;
-                        throw new Error(err.stdout || err);
-                    }
+                    // if (res?.error) {
+                    //     const err = res.error;
+                    //     throw new Error(err.stdout || err);
+                    // }
                 }
             }
         )
