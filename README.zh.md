@@ -51,12 +51,16 @@ const { performMultiTSCheck } = require('delta-tsc-check');
 const eslintignorePath = path.join(__dirname, '.eslintignore');
 module.exports = {
     '**/*.{ts,tsx}': async (filenames) => {
-        // 生成tsc相关的执行命令
-        const { commands = [] } = await performMultiTSCheck({ filenames, lintstaged: true });
-        // 其他命令 如eslint
-        commands.push(`prettier ${filenames.join(' ')} --write`);
-        commands.push(`eslint --ignore-path ${eslintignorePath} ${filenames.join(' ')} --fix --quiet --cache`);
-        return commands;
+        // Generate tsc-related execution commands
+        const commands = await performMultiTSCheck({ filenames, lintstaged: true });
+
+        // Other commands such as eslint
+        if (commands) {
+            commands.push(`prettier ${filenames.join(' ')} --write`);
+            commands.push(`eslint --ignore-path ${eslintignorePath} ${filenames.join(' ')} --fix --quiet --cache`);
+            return commands;
+        }
+        return [];
     },
 };
 ```

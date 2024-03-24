@@ -49,11 +49,15 @@ const eslintignorePath = path.join(__dirname, '.eslintignore');
 module.exports = {
     '**/*.{ts,tsx}': async (filenames) => {
         // Generate tsc-related execution commands
-        const { commands = [] } = await performMultiTSCheck({ filenames, lintstaged: true });
+        const commands = await performMultiTSCheck({ filenames, lintstaged: true });
+
         // Other commands such as eslint
-        commands.push(`prettier ${filenames.join(' ')} --write`);
+        if (commands) {
+            commands.push(`prettier ${filenames.join(' ')} --write`);
         commands.push(`eslint --ignore-path ${eslintignorePath} ${filenames.join(' ')} --fix --quiet --cache`);
         return commands;
+        }
+        
     },
 };
 ```
